@@ -115,7 +115,7 @@ class User extends Model implements AuthenticatableContract,
     {
         
         $exist = $this->is_favorite($micropostId);
-        $its_me = $this->on_favorite($this->id);
+        $its_me = $this->on_favorite(\Auth::user()->id);
         
         if ($exist || $its_me) {
             return false;
@@ -129,7 +129,7 @@ class User extends Model implements AuthenticatableContract,
     {
         
         $exist = $this->is_favorite($micropostId);
-        $its_me = $this->on_favorite($this->id);
+        $its_me = $this->on_favorite(\Auth::user()->id);
         
         if ($exist && !$its_me) {
             $this->my_favorites()->detach($micropostId);
