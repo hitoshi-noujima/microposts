@@ -10,6 +10,8 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
+
+
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract
@@ -97,4 +99,53 @@ class User extends Model implements AuthenticatableContract,
         $follow_user_ids[] = $this->id;
         return Micropost::whereIn('user_id', $follow_user_ids);
     }
+    
+    // お気に入り
+    public function my_favorites()
+    {
+        return $this->belongsToMany(Micropost::class, 'user_favorites', 'user_id', 'micropost_id')->withTimestamps();
+    }
+    
+    public function favorite_users()
+    {
+        return $this->belongsToMany(User::class, 'user_favorites', 'micropost_id', 'user_id')->withTimestamps();
+    }
+    
+    public function add_favorite($micropostId)
+    {
+        
+        $exist = $this->is_favorite($micropostId);
+        $its_me = $this->on_favorite($this->id);
+        
+        if ($exist || $its_me) {
+            return false;
+        } else {
+            $this->my_favorites()->attach($micropostId);
+            return true;
+        }
+    }
+    
+    public function remove_favorite($micropostId)
+    {
+        
+        $exist = $this->is_favorite($micropostId);
+        $its_me = $this->on_favorite($this->id);
+        
+        if ($exist && !$its_me) {
+            $this->my_favorites()->detach($micropostId);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function is_favorite($micropostId) {
+        return $this->my_favorites()->where('micropost_id', $micropostId)->exists();
+    }
+    
+     public function on_favorite($userId) {
+        return $this->favorite_users()->where('user_id', $userId)->exists();
+    }
+    
+    
 }

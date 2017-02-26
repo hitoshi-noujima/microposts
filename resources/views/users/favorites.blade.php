@@ -15,7 +15,7 @@
         </aside>
         <div class="col-xs-8">
             @include('users.commons.tab')
-           
+            
             @if (count($microposts) > 0)
                 @include('microposts.microposts', ['microposts' => $microposts])
             @endif

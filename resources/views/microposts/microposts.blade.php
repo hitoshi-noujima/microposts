@@ -7,7 +7,23 @@
         </div>
         <div class="media-body">
             <div>
-                {!! link_to_route('users.show', $user->name, ['id' => $user->id]) !!} <span class="text-muted">posted at {{ $micropost->created_at }}</span>
+                {!! link_to_route('users.show', $user->name, ['id' => $user->id]) !!}
+                <span class="text-muted">posted at {{ $micropost->created_at }}</span>
+            </div>
+            <div>
+                @if (Auth::user()->id != $micropost->user_id)
+                   
+                    @if (Auth::user()->is_favorite($micropost->id))
+                        {!! Form::open(['route' => ['user.removefavorite', $micropost->id], 'method' => 'delete']) !!}
+                            {!! Form::submit('★ remove', ['class' => "btn btn-info btn-xs"]) !!}
+                        {!! Form::close() !!}
+                    @else
+                        {!! Form::open(['route' => ['user.addfavorite', $micropost->id]]) !!}
+                            {!! Form::submit('☆ add', ['class' => "btn btn-default btn-xs"]) !!}
+                        {!! Form::close() !!}
+                    @endif
+                    
+                @endif
             </div>
             <div>
                 <p>{!! nl2br(e($micropost->content)) !!}</p>
