@@ -12,7 +12,6 @@
             </div>
             <div>
                 @if (Auth::user()->id != $micropost->user_id)
-                   
                     @if (Auth::user()->is_favorite($micropost->id))
                         {!! Form::open(['route' => ['user.removefavorite', $micropost->id], 'method' => 'delete']) !!}
                             {!! Form::submit('★ remove', ['class' => "btn btn-info btn-xs"]) !!}
