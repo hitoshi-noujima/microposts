@@ -19,8 +19,8 @@ class CreateUserFavoritesTable extends Migration
             $table->timestamps();
             
             // 外部キー設定
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('micropost_id')->references('id')->on('microposts');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('micropost_id')->references('id')->on('microposts')->onDelete('cascade');
             
             // user_idとmicropost_idの組み合わせの重複を許さない
             $table->unique(['user_id', 'micropost_id']);

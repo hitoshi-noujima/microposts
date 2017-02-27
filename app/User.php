@@ -106,11 +106,6 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsToMany(Micropost::class, 'user_favorites', 'user_id', 'micropost_id')->withTimestamps();
     }
     
-    public function favorite_users()
-    {
-        return $this->belongsToMany(User::class, 'user_favorites', 'micropost_id', 'user_id')->withTimestamps();
-    }
-    
     public function add_favorite($micropostId)
     {
         
@@ -140,10 +135,5 @@ class User extends Model implements AuthenticatableContract,
     public function is_favorite($micropostId) {
         return $this->my_favorites()->where('micropost_id', $micropostId)->exists();
     }
-    
-     public function on_favorite($userId) {
-        return $this->favorite_users()->where('user_id', $userId)->exists();
-    }
-    
     
 }

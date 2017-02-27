@@ -11,17 +11,14 @@
                 <span class="text-muted">posted at {{ $micropost->created_at }}</span>
             </div>
             <div>
-                @if (Auth::user()->id != $micropost->user_id)
-                    @if (Auth::user()->is_favorite($micropost->id))
-                        {!! Form::open(['route' => ['user.removefavorite', $micropost->id], 'method' => 'delete']) !!}
-                            {!! Form::submit('★ remove', ['class' => "btn btn-info btn-xs"]) !!}
-                        {!! Form::close() !!}
-                    @else
-                        {!! Form::open(['route' => ['user.addfavorite', $micropost->id]]) !!}
-                            {!! Form::submit('☆ add', ['class' => "btn btn-default btn-xs"]) !!}
-                        {!! Form::close() !!}
-                    @endif
-                    
+                @if (Auth::user()->is_favorite($micropost->id))
+                    {!! Form::open(['route' => ['user.removefavorite', $micropost->id], 'method' => 'delete']) !!}
+                        {!! Form::submit('★ remove', ['class' => "btn btn-info btn-xs"]) !!}
+                    {!! Form::close() !!}
+                @else
+                    {!! Form::open(['route' => ['user.addfavorite', $micropost->id]]) !!}
+                        {!! Form::submit('☆ add', ['class' => "btn btn-default btn-xs"]) !!}
+                    {!! Form::close() !!}
                 @endif
             </div>
             <div>
